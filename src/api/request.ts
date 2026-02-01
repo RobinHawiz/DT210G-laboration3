@@ -1,4 +1,8 @@
+import delay from "@utils/delay";
+
 async function request<T = void>(url: string, options: RequestInit = {}) {
+  // Simulate network delay
+  await delay(700);
   const response = await fetch(url, options);
 
   if (!response.ok) {
