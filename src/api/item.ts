@@ -1,4 +1,4 @@
-import type { ItemEntity } from "@/types/item";
+import type { ItemEntity } from "@customTypes/item";
 import request from "@api/request";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
