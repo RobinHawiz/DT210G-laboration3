@@ -21,12 +21,13 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "src"),
       "@components": path.resolve(import.meta.dirname, "src/components"),
       "@api": path.resolve(import.meta.dirname, "src/api"),
       "@hooks": path.resolve(import.meta.dirname, "src/hooks"),
-      "@types": path.resolve(import.meta.dirname, "src/types"),
-      "@utils": path.resolve(import.meta.dirname, "src/types"),
+      "@routes": path.resolve(import.meta.dirname, "src/routes"),
+      "@customTypes": path.resolve(import.meta.dirname, "src/types"),
+      "@utils": path.resolve(import.meta.dirname, "src/utils"),
+      "@src": path.resolve(import.meta.dirname, "src"),
     },
   },
   server: {
