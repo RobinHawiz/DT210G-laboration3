@@ -5,6 +5,7 @@ import "@src/main.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PublicLayout from "@routes/public/Layout";
 import ItemsPageLayout from "@routes/public/items-page/Layout";
+import Spinner from "@components/LoadingSpinner";
 
 export const queryClient = new QueryClient();
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
           {
             index: true,
             lazy: () => import("@routes/public/items-page/Page"),
-            hydrateFallbackElement: <div>Loading items...</div>,
+            hydrateFallbackElement: <Spinner />,
           },
         ],
       },
