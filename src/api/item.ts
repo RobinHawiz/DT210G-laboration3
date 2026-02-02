@@ -7,6 +7,6 @@ export async function getItems() {
   return await request<Array<ItemEntity>>(`${API_BASE_URL}/items`);
 }
 
-export async function getItemById(id: number) {
+export async function getItemById(id: string) {
   return await request<ItemEntity>(`${API_BASE_URL}/items/${id}`);
 }
