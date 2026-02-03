@@ -1,18 +1,42 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { itemListQueryOptions } from "@hooks/queryOptions";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import useToast, { type ToastMessages } from "@hooks/useToast";
 import Item from "@components/Item";
-import Spinner from "@components/LoadingSpinner";
+
+const initialMessages: ToastMessages = {
+  pending: "Loading items...",
+  error: "Could not load items",
+  success: "Items successfully loaded",
+};
+
+const refetchMessages: ToastMessages = {
+  pending: "Updating items...",
+  error: "Could not update items",
+  success: "Items updated successfully",
+};
 
 function ItemList() {
-  const { data: itemList, isFetching } = useSuspenseQuery(
-    itemListQueryOptions(),
+  const {
+    data: itemList,
+    promise,
+    refetch,
+    isRefetching,
+    isFetching,
+  } = useQuery(itemListQueryOptions());
+
+  useToast(
+    isFetching,
+    isRefetching,
+    promise,
+    refetch,
+    initialMessages,
+    refetchMessages,
   );
 
   return (
     <>
-      {isFetching && <Spinner />}
-      <ul className="grid-cols-[repeat(auto-fit,13rem)] grid gap-6 w-full justify-center">
+      <ul className="grid w-full grid-cols-[repeat(auto-fit,13rem)] justify-center gap-6">
         {itemList?.map((item) => (
           <li key={item.id}>
             <Link to={`/items/${item.id}`}>

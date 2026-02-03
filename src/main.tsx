@@ -9,7 +9,14 @@ import ItemPageLayout from "@routes/public/item-page/Layout";
 import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      experimental_prefetchInRender: true,
+      staleTime: 15000,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
