@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PublicLayout from "@routes/public/Layout";
 import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
+import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
 import Spinner from "@components/LoadingSpinner";
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             hydrateFallbackElement: <Spinner />,
           },
         ],
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
       },
       {
         path: "*",
