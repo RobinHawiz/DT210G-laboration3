@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PublicLayout from "@routes/public/Layout";
 import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
+import NotFoundPage from "@routes/public/not-found-page/Page";
 import Spinner from "@components/LoadingSpinner";
 
 export const queryClient = new QueryClient();
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        lazy: () => import("@routes/public/not-found-page/Page"),
+        element: <NotFoundPage />,
       },
     ],
   },
