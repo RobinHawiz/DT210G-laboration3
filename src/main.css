@@ -1,6 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 @import "tailwindcss";
 
+/* Toastify Customization */
+:root {
+  --toastify-font-family: inherit;
+}
+
 @theme {
   --font-sans: "Inter", sans-serif;
   --color-primary: #f2f2f2;
@@ -8,5 +13,5 @@
 }
 
 @utility flex-center {
-  @apply flex justify-center items-center;
+  @apply flex items-center justify-center;
 }
