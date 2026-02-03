@@ -15,6 +15,11 @@
     "react-router-dom": "^7.13.0",
     "react-toastify": "^11.0.5"
   },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
+  },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@tailwindcss/vite": "^4.1.18",
