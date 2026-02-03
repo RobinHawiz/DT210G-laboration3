@@ -8,7 +8,6 @@ import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
 import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
-import Spinner from "@components/LoadingSpinner";
 
 export const queryClient = new QueryClient();
 
@@ -23,7 +22,7 @@ const router = createBrowserRouter([
           {
             index: true,
             lazy: () => import("@routes/public/items-page/Page"),
-            hydrateFallbackElement: <Spinner />,
+            hydrateFallbackElement: <></>,
           },
         ],
       },
@@ -34,7 +33,7 @@ const router = createBrowserRouter([
           {
             index: true,
             lazy: () => import("@routes/public/item-page/Page"),
-            hydrateFallbackElement: <Spinner />,
+            hydrateFallbackElement: <></>,
           },
         ],
       },
