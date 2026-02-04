@@ -5,7 +5,7 @@ function PublicLayout() {
   return (
     <>
       <Header />
-      <main className="max-w-277 w-full mx-auto px-1 flex flex-col items-center relative">
+      <main className="relative mx-auto flex w-full max-w-277 flex-col items-center px-1">
         <Outlet />
       </main>
     </>

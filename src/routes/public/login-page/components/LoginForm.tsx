@@ -2,8 +2,8 @@ import { useState, type SubmitEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import z from "zod";
+import { useAuth } from "@src/contexts/AuthProvider";
 import Spinner from "@components/ButtonSpinner";
-import { loginUser } from "@api/item";
 
 const loginFormSchema = z.object({
   username: z
@@ -16,11 +16,12 @@ const loginFormSchema = z.object({
     .max(100, "Password must be between 1 and 100 characters."),
 });
 
-type LoginForm = z.infer<typeof loginFormSchema>;
+export type LoginCredentials = z.infer<typeof loginFormSchema>;
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,11 +38,7 @@ function LoginForm() {
     // Form submission
     try {
       setIsLoading(true);
-      const response = await loginUser(
-        result.data.username,
-        result.data.password,
-      );
-      localStorage.setItem("token", response!.token);
+      await login(result.data);
       navigate("/");
       toast.info("Login successful. Welcome!");
     } catch (err) {

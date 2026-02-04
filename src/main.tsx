@@ -8,6 +8,7 @@ import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
 import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
+import { AuthProvider } from "@src/contexts/AuthProvider";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,20 +58,22 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable={false}
-      pauseOnHover
-      theme="colored"
-      transition={Slide}
-    />
-  </QueryClientProvider>,
+  <AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="colored"
+        transition={Slide}
+      />
+    </QueryClientProvider>
+  </AuthProvider>,
 );
