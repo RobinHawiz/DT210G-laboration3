@@ -18,3 +18,9 @@ export async function loginUser(username: string, password: string) {
     body: JSON.stringify({ username, password }),
   });
 }
+
+export async function validateToken(token: string) {
+  return await request<{ token: string }>(`${API_BASE_URL}/auth`, {
+    headers: { Authorization: "Bearer " + token },
+  });
+}

@@ -1,6 +1,10 @@
+import { useAuth } from "@src/contexts/AuthProvider";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Header() {
+  const { token, logout } = useAuth();
+
   return (
     <header>
       <nav>
@@ -14,12 +18,24 @@ function Header() {
             </NavLink>
           </li>
           <li className="text-lg">
-            <NavLink
-              className="hover:text-secondary text-secondary/70 [&.active]:text-secondary border-b-2 border-transparent text-lg transition-colors duration-200 [&.active]:border-blue-500"
-              to="/login"
-            >
-              Login
-            </NavLink>
+            {token === null ? (
+              <NavLink
+                className="hover:text-secondary text-secondary/70 [&.active]:text-secondary border-b-2 border-transparent text-lg transition-colors duration-200 [&.active]:border-blue-500"
+                to="/login"
+              >
+                Logga in
+              </NavLink>
+            ) : (
+              <button
+                className="hover:text-secondary text-secondary/70 [&.active]:text-secondary cursor-pointer border-b-2 border-transparent text-lg transition-colors duration-200 [&.active]:border-blue-500"
+                onClick={() => {
+                  toast.info("You have successfully logged out");
+                  logout();
+                }}
+              >
+                Logga ut
+              </button>
+            )}
           </li>
         </ul>
       </nav>
