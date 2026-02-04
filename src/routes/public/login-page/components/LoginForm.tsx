@@ -1,33 +1,46 @@
 import { useState, type SubmitEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import z from "zod";
 import Spinner from "@components/ButtonSpinner";
 import { loginUser } from "@api/item";
-import { useNavigate } from "react-router-dom";
+
+const loginFormSchema = z.object({
+  username: z
+    .string()
+    .min(1, "Username must be between 1 and 50 characters.")
+    .max(50, "Username must be between 1 and 50 characters."),
+  password: z
+    .string()
+    .min(1, "Password must be between 1 and 100 characters.")
+    .max(100, "Password must be between 1 and 100 characters."),
+});
+
+type LoginForm = z.infer<typeof loginFormSchema>;
 
 function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
 
     // Validation
-    if (username.length < 1 || username.length > 50) {
-      toast.error("Username must be between 1 and 50 characters.");
-      return;
-    }
-
-    if (password.length < 1 || password.length > 100) {
-      toast.error("Password must be between 1 and 100 characters.");
+    const result = loginFormSchema.safeParse(data);
+    if (result.error) {
+      toast.error(result.error.issues[0].message);
       return;
     }
 
     // Form submission
     try {
       setIsLoading(true);
-      const response = await loginUser(username, password);
+      const response = await loginUser(
+        result.data.username,
+        result.data.password,
+      );
       localStorage.setItem("token", response!.token);
       navigate("/");
       toast.info("Login successful. Welcome!");
@@ -42,7 +55,7 @@ function LoginForm() {
   return (
     <div className="w-full px-3">
       <form
-        className="flex-center mx-auto w-full max-w-123.75 flex-col gap-3.75 rounded-[0.625rem] py-13 bg-white shadow-md"
+        className="flex-center mx-auto w-full max-w-123.75 flex-col gap-3.75 rounded-[0.625rem] bg-white py-13 shadow-md"
         onSubmit={(e) => handleSubmit(e)}
       >
         <div className="flex w-62.5 flex-col">
@@ -52,9 +65,6 @@ function LoginForm() {
             type="text"
             id="username"
             name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            minLength={1}
             maxLength={50}
             required
           />
@@ -66,16 +76,13 @@ function LoginForm() {
             type="password"
             id="password"
             name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={1}
             maxLength={100}
             required
           />
         </div>
         <div>
           <button
-            className="flex cursor-pointer gap-2 rounded-full px-3 py-1.5 transition-colors duration-200 ease-in-out hover:bg-blue-600 bg-blue-500 text-white"
+            className="flex cursor-pointer gap-2 rounded-full bg-blue-500 px-3 py-1.5 text-white transition-colors duration-200 ease-in-out hover:bg-blue-600"
             type="submit"
             disabled={isLoading}
           >
