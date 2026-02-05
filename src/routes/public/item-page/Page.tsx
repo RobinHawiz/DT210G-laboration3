@@ -1,8 +1,13 @@
 import { useEffect } from "react";
-import { useParams, type LoaderFunctionArgs } from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+  type LoaderFunctionArgs,
+} from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { queryClient } from "@src/main";
+import { useAuth } from "@src/contexts/AuthProvider";
 import { itemQueryOptions } from "@hooks/queryOptions";
 import useToast, { type ToastMessages } from "@hooks/useToast";
 import Item from "@components/Item";
@@ -50,16 +55,34 @@ export function Component() {
     initialMessages,
     refetchMessages,
   );
+
+  const { token } = useAuth();
+
+  const navigate = useNavigate();
+  const redirectToEditForm = () => {
+    navigate(`/items/${id}/edit`);
+  };
+
   return (
     <>
       {(!isFetching || isRefetching) && (
-        <Item
-          name={item!.name}
-          description={item!.description}
-          price={item!.price}
-          imageUrl={item!.imageUrl}
-          amount={item!.amount}
-        />
+        <>
+          {token && (
+            <button
+              className="mx-4 my-2 cursor-pointer self-end rounded-full bg-blue-500 px-4 py-2 text-white shadow-md transition-colors duration-200 ease-in-out hover:bg-blue-600"
+              onClick={redirectToEditForm}
+            >
+              Edit
+            </button>
+          )}
+          <Item
+            name={item!.name}
+            description={item!.description}
+            price={item!.price}
+            imageUrl={item!.imageUrl}
+            amount={item!.amount}
+          />
+        </>
       )}
     </>
   );

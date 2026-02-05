@@ -10,9 +10,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PublicLayout from "@routes/public/Layout";
 import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
+import EditItemPageLayout from "@routes/admin/edit-item-page/Layout";
 import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
 import { AuthProvider } from "@src/contexts/AuthProvider";
+import ProtectedRoute from "@components/ProtectedRoute";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +52,21 @@ const router = createBrowserRouter([
           {
             index: true,
             lazy: () => import("@routes/public/item-page/Page"),
+            hydrateFallbackElement: <></>,
+          },
+        ],
+      },
+      {
+        path: "items/:id/edit",
+        element: (
+          <ProtectedRoute>
+            <EditItemPageLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            lazy: () => import("@routes/admin/edit-item-page/Page"),
             hydrateFallbackElement: <></>,
           },
         ],

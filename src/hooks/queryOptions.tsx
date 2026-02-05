@@ -14,3 +14,11 @@ export function itemQueryOptions(id: string) {
     queryFn: ({ queryKey }) => getItemById(queryKey[1]),
   });
 }
+
+export function itemFormQueryOptions(id: string) {
+  return queryOptions({
+    queryKey: ["item", id],
+    queryFn: ({ queryKey }) => getItemById(queryKey[1]),
+    enabled: false,
+  });
+}
