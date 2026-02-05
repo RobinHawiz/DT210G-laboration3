@@ -60,6 +60,21 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   }, []);
 
+  /*
+   * Revalidate the token on an interval and log out if it expires.
+   */
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    const id = setInterval(() => {
+      checkToken();
+    }, 3_600_000);
+
+    return () => clearInterval(id);
+  }, [token]);
+
   return (
     <AuthContext.Provider value={{ token, login, logout }}>
       {children}
