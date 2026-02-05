@@ -45,7 +45,7 @@ function LoginForm() {
     try {
       setIsLoading(true);
       await login(result.data);
-      navigate("/");
+      navigate("/items");
       toast.info("Login successful. Welcome!");
     } catch (err) {
       console.error(err);
