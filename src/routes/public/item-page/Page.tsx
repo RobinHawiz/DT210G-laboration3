@@ -4,7 +4,7 @@ import {
   type LoaderFunctionArgs,
 } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "@src/main";
+import { queryClient } from "@src/queryClient";
 import { useAuth } from "@src/contexts/AuthProvider";
 import { itemQueryOptions } from "@hooks/queryOptions";
 import useToast, { type ToastMessages } from "@hooks/useToast";

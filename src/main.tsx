@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { Slide, ToastContainer } from "react-toastify";
 import "@src/main.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import PublicLayout from "@routes/public/Layout";
 import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
@@ -15,15 +15,7 @@ import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
 import { AuthProvider } from "@src/contexts/AuthProvider";
 import ProtectedRoute from "@components/ProtectedRoute";
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      experimental_prefetchInRender: true,
-      staleTime: 15000,
-    },
-  },
-});
+import { queryClient } from "@src/queryClient";
 
 const router = createBrowserRouter([
   {

@@ -1,5 +1,16 @@
-import { queryOptions } from "@tanstack/react-query";
-import { getItemById, getItems } from "@src/api/item";
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import { getItemById, getItems, updateItemById } from "@src/api/item";
+import { queryClient } from "@src/queryClient";
+
+export function itemUpdateMutationOptions() {
+  return mutationOptions({
+    mutationFn: updateItemById,
+    onSuccess: (_data, item) => {
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+      queryClient.invalidateQueries({ queryKey: ["item", item.id.toString()] });
+    },
+  });
+}
 
 export function itemListQueryOptions() {
   return queryOptions({

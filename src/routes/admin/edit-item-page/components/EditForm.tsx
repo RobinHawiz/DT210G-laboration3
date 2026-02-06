@@ -1,7 +1,8 @@
 import { useState, type SubmitEvent } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { itemUpdateMutationOptions } from "@hooks/queryOptions";
 import { toast } from "react-toastify";
 import z from "zod";
-import { updateItemById } from "@api/item";
 import Drink from "/images/drink.png";
 import Dairy from "/images/dairy.png";
 import fruitVeggies from "/images/vegetable.png";
@@ -9,6 +10,7 @@ import Pantry from "/images/pantry.png";
 import Frozen from "/images/frozen.png";
 import Drake from "/images/dragon.jpg";
 import NoImage from "/images/placeholder.png";
+import type { ItemEntity } from "@customTypes/item";
 
 const editFormSchema = z.object({
   name: z
@@ -43,6 +45,9 @@ type Props = {
 function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
   const [formImageUrl, setFormImageUrl] = useState(imageUrl);
   const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync: updateItemMutation } = useMutation(
+    itemUpdateMutationOptions(),
+  );
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,11 +64,13 @@ function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
     // Form submission
     try {
       setIsLoading(true);
-      const promise = updateItemById(id.toString(), result.data);
+      const updatedItem: ItemEntity = { id, ...result.data };
+      const promise = updateItemMutation(updatedItem);
+
       toast.promise(promise, {
-        pending: `Saving "${result.data.name}...`,
-        error: `Couldn’t update "${result.data.name}". Try again or refresh the page.`,
-        success: `"${result.data.name}" updated.`,
+        pending: `Saving "${updatedItem.name}"...`,
+        error: `Couldn’t update "${updatedItem.name}". Try again or refresh the page.`,
+        success: `"${updatedItem.name}" updated.`,
       });
       await promise;
     } catch (err) {
