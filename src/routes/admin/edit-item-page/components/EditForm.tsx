@@ -44,8 +44,7 @@ type Props = {
 
 function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
   const [formImageUrl, setFormImageUrl] = useState(imageUrl);
-  const [isLoading, setIsLoading] = useState(false);
-  const { mutateAsync: updateItemMutation } = useMutation(
+  const { mutateAsync: updateItemMutation, isPending: isLoading } = useMutation(
     itemUpdateMutationOptions(),
   );
 
@@ -63,7 +62,6 @@ function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
 
     // Form submission
     try {
-      setIsLoading(true);
       const updatedItem: ItemEntity = { id, ...result.data };
       const promise = updateItemMutation(updatedItem);
 
@@ -75,8 +73,6 @@ function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
       await promise;
     } catch (err) {
       console.error(err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
