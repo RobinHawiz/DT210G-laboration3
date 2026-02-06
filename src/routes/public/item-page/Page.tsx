@@ -1,11 +1,9 @@
-import { useEffect } from "react";
 import {
   useNavigate,
   useParams,
   type LoaderFunctionArgs,
 } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { queryClient } from "@src/main";
 import { useAuth } from "@src/contexts/AuthProvider";
 import { itemQueryOptions } from "@hooks/queryOptions";
@@ -25,11 +23,12 @@ const refetchMessages: ToastMessages = {
 };
 
 export function ErrorBoundary() {
-  useEffect(() => {
-    toast.error("Failed to load item");
-  }, []);
-
-  return <></>;
+  return (
+    <h2 className="text-red-500">
+      The selected item cannot be found, please select a different one or try
+      refreshing the page.
+    </h2>
+  );
 }
 
 export function loader({ params }: LoaderFunctionArgs) {
