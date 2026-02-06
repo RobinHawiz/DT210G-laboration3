@@ -4,8 +4,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       experimental_prefetchInRender: true,
-      staleTime: 15000,
+      staleTime: Infinity,
     },
   },
 });
-
