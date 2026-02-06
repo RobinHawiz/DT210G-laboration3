@@ -1,10 +1,5 @@
-import {
-  useNavigate,
-  useParams,
-  type LoaderFunctionArgs,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "@src/queryClient";
 import { useAuth } from "@src/contexts/AuthProvider";
 import { itemQueryOptions } from "@hooks/queryOptions";
 import useToast, { type ToastMessages } from "@hooks/useToast";
@@ -29,11 +24,6 @@ export function ErrorBoundary() {
       refreshing the page.
     </h2>
   );
-}
-
-export function loader({ params }: LoaderFunctionArgs) {
-  const { id } = params;
-  queryClient.ensureQueryData(itemQueryOptions(id!)).catch(() => {});
 }
 
 export function Component() {
@@ -64,7 +54,7 @@ export function Component() {
 
   return (
     <>
-      {(!isFetching || isRefetching) && (
+      {(!isFetching || isRefetching) && item && (
         <>
           {token && (
             <button
@@ -75,11 +65,11 @@ export function Component() {
             </button>
           )}
           <Item
-            name={item!.name}
-            description={item!.description}
-            price={item!.price}
-            imageUrl={item!.imageUrl}
-            amount={item!.amount}
+            name={item.name}
+            description={item.description}
+            price={item.price}
+            imageUrl={item.imageUrl}
+            amount={item.amount}
           />
         </>
       )}

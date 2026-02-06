@@ -16,6 +16,7 @@ export function itemListQueryOptions() {
   return queryOptions({
     queryKey: ["items"],
     queryFn: getItems,
+    throwOnError: true,
   });
 }
 
@@ -23,6 +24,7 @@ export function itemQueryOptions(id: string) {
   return queryOptions({
     queryKey: ["item", id],
     queryFn: ({ queryKey }) => getItemById(queryKey[1]),
+    throwOnError: true,
   });
 }
 
