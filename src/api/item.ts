@@ -1,4 +1,4 @@
-import type { ItemEntity } from "@customTypes/item";
+import type { ItemEntity, ItemPayload } from "@customTypes/item";
 import request from "@api/request";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -9,6 +9,18 @@ export async function getItems() {
 
 export async function getItemById(id: string) {
   return await request<ItemEntity>(`${API_BASE_URL}/items/${id}`);
+}
+
+export async function addItemById(payload: ItemPayload) {
+  const options: RequestInit = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+    body: JSON.stringify(payload),
+  };
+  return await request<string>(`${API_BASE_URL}/items`, options);
 }
 
 export async function updateItemById(item: ItemEntity) {

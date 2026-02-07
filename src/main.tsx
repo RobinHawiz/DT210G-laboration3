@@ -11,6 +11,7 @@ import PublicLayout from "@routes/public/Layout";
 import ItemsPageLayout from "@routes/public/items-page/Layout";
 import ItemPageLayout from "@routes/public/item-page/Layout";
 import EditItemPageLayout from "@routes/admin/edit-item-page/Layout";
+import AddItemPageLayout from "@routes/admin/create-item-page/Layout";
 import LoginPage from "@routes/public/login-page/Page";
 import NotFoundPage from "@routes/public/not-found-page/Page";
 import { AuthProvider } from "@src/contexts/AuthProvider";
@@ -59,6 +60,21 @@ const router = createBrowserRouter([
           {
             index: true,
             lazy: () => import("@routes/admin/edit-item-page/Page"),
+            hydrateFallbackElement: <></>,
+          },
+        ],
+      },
+      {
+        path: "item/add",
+        element: (
+          <ProtectedRoute>
+            <AddItemPageLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            lazy: () => import("@routes/admin/create-item-page/Page"),
             hydrateFallbackElement: <></>,
           },
         ],

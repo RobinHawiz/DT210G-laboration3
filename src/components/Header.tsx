@@ -19,6 +19,18 @@ function Header() {
               Item Stock
             </NavLink>
           </li>
+          <li>
+            {token !== null && (
+              <NavLink
+                className={({ isActive }) =>
+                  `hover:text-secondary text-secondary/70 border-b-2 border-transparent text-lg transition-colors duration-200 ${isActive ? "text-secondary! border-blue-500!" : ""}`
+                }
+                to="/item/add"
+              >
+                Create Item
+              </NavLink>
+            )}
+          </li>
           <li className="text-lg">
             {token === null ? (
               <NavLink

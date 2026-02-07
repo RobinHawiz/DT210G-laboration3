@@ -1,11 +1,23 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 import {
+  addItemById,
   deleteItemById,
   getItemById,
   getItems,
   updateItemById,
 } from "@src/api/item";
 import { queryClient } from "@src/queryClient";
+
+export function itemAddMutationOptions() {
+  return mutationOptions({
+    mutationFn: addItemById,
+    onSuccess: (location, item) => {
+      const id = location!.replace(/[\D]/g, "");
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+      queryClient.setQueryData(["item", id], { id: parseInt(id), ...item });
+    },
+  });
+}
 
 export function itemUpdateMutationOptions() {
   return mutationOptions({
