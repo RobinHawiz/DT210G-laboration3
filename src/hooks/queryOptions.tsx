@@ -7,6 +7,7 @@ import {
   updateItemById,
 } from "@src/api/item";
 import { queryClient } from "@src/queryClient";
+import type { ItemEntity } from "@customTypes/item";
 
 export function itemAddMutationOptions() {
   return mutationOptions({
@@ -52,6 +53,12 @@ export function itemQueryOptions(id: string) {
     queryKey: ["item", id],
     queryFn: ({ queryKey }) => getItemById(queryKey[1]),
     throwOnError: true,
+    initialData: () => {
+      // Use an item from the 'items' query as the initial data for this item query
+      return queryClient
+        .getQueryData<Array<ItemEntity>>(["items"])
+        ?.find((item) => item.id.toString() === id);
+    },
   });
 }
 
