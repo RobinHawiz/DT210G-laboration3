@@ -1,5 +1,10 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import { getItemById, getItems, updateItemById } from "@src/api/item";
+import {
+  deleteItemById,
+  getItemById,
+  getItems,
+  updateItemById,
+} from "@src/api/item";
 import { queryClient } from "@src/queryClient";
 
 export function itemUpdateMutationOptions() {
@@ -8,6 +13,16 @@ export function itemUpdateMutationOptions() {
     onSuccess: (_data, item) => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
       queryClient.invalidateQueries({ queryKey: ["item", item.id.toString()] });
+    },
+  });
+}
+
+export function itemDeleteMutationOptions() {
+  return mutationOptions({
+    mutationFn: deleteItemById,
+    onSuccess: (_data, id) => {
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+      queryClient.invalidateQueries({ queryKey: ["item", id.toString()] });
     },
   });
 }

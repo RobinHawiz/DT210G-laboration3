@@ -24,6 +24,16 @@ export async function updateItemById(item: ItemEntity) {
   return await request(`${API_BASE_URL}/items/${id}`, options);
 }
 
+export async function deleteItemById(id: number) {
+  const options: RequestInit = {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  };
+  return await request(`${API_BASE_URL}/items/${id}`, options);
+}
+
 export async function loginUser(username: string, password: string) {
   return await request<{ token: string }>(`${API_BASE_URL}/users/login`, {
     method: "POST",

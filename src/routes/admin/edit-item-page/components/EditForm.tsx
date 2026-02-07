@@ -1,8 +1,13 @@
 import { useState, type SubmitEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { itemUpdateMutationOptions } from "@hooks/queryOptions";
+import {
+  itemDeleteMutationOptions,
+  itemUpdateMutationOptions,
+} from "@hooks/queryOptions";
 import { toast } from "react-toastify";
 import z from "zod";
+import type { ItemEntity } from "@customTypes/item";
 import Drink from "/images/drink.png";
 import Dairy from "/images/dairy.png";
 import fruitVeggies from "/images/vegetable.png";
@@ -10,7 +15,6 @@ import Pantry from "/images/pantry.png";
 import Frozen from "/images/frozen.png";
 import Drake from "/images/dragon.jpg";
 import NoImage from "/images/placeholder.png";
-import type { ItemEntity } from "@customTypes/item";
 
 const editFormSchema = z.object({
   name: z
@@ -44,9 +48,11 @@ type Props = {
 
 function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
   const [formImageUrl, setFormImageUrl] = useState(imageUrl);
-  const { mutateAsync: updateItemMutation, isPending: isLoading } = useMutation(
-    itemUpdateMutationOptions(),
-  );
+  const navigate = useNavigate();
+  const { mutateAsync: updateItemMutation, isPending: isUpdating } =
+    useMutation(itemUpdateMutationOptions());
+  const { mutateAsync: deleteItemMutation, isPending: isDeleting } =
+    useMutation(itemDeleteMutationOptions());
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,7 +76,25 @@ function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
         error: `Couldn’t update "${updatedItem.name}". Try again or refresh the page.`,
         success: `"${updatedItem.name}" updated.`,
       });
+
       await promise;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const promise = deleteItemMutation(id);
+
+      toast.promise(promise, {
+        pending: `Deleting "${name}"...`,
+        error: `Couldn’t delete "${name}". Try again or refresh the page.`,
+        success: `"${name}" deleted.`,
+      });
+
+      await promise;
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -161,17 +185,17 @@ function EditForm({ id, name, description, price, imageUrl, amount }: Props) {
           </div>
           <div className="flex justify-center gap-3.75">
             <button
-              disabled={isLoading}
+              disabled={isUpdating || isDeleting}
               className="flex cursor-pointer items-center gap-2 rounded-full bg-blue-500 px-3 py-1.5 text-white transition-colors duration-200 ease-in-out hover:bg-blue-600 disabled:bg-blue-400"
               type="submit"
             >
               Update
             </button>
             <button
-              disabled={isLoading}
+              disabled={isUpdating || isDeleting}
               className="flex cursor-pointer items-center gap-2 rounded-full bg-red-500 px-3 py-1.5 text-white transition-colors duration-200 ease-in-out hover:bg-red-600 disabled:bg-red-400"
               type="button"
-              onClick={() => {}}
+              onClick={handleDelete}
             >
               Delete
             </button>
