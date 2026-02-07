@@ -33,9 +33,8 @@ export function itemUpdateMutationOptions() {
 export function itemDeleteMutationOptions() {
   return mutationOptions({
     mutationFn: deleteItemById,
-    onSuccess: (_data, id) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
-      queryClient.invalidateQueries({ queryKey: ["item", id.toString()] });
     },
   });
 }
