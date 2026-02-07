@@ -6,7 +6,7 @@ import { itemFormQueryOptions } from "@hooks/queryOptions";
 import EditForm from "@routes/admin/edit-item-page/components/EditForm";
 import type { ToastMessages } from "@hooks/useToast";
 
-const initialMessages: ToastMessages = {
+const messages: ToastMessages = {
   pending: "Loading edit form...",
   error: "Couldn’t load the edit form",
   success: "Edit form ready",
@@ -24,22 +24,18 @@ export function Component() {
   const { id } = useParams<{ id: string }>();
   const {
     data: item,
-    refetch,
-    isFetched,
+    promise,
     isFetching,
+    isRefetching,
   } = useQuery(itemFormQueryOptions(id!));
 
-  useEffect(() => {
-    if (!isFetched && !isFetching) {
-      refetch();
-      const messages = initialMessages;
-      toast.promise(refetch, {
-        pending: messages.pending,
-        error: messages.error,
-        success: messages.success,
-      });
-    }
-  }, [isFetching]);
+  if (isFetching && !isRefetching) {
+    toast.promise(promise, {
+      pending: messages.pending,
+      error: messages.error,
+      success: messages.success,
+    });
+  }
 
   return item ? (
     <EditForm
